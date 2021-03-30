@@ -1,0 +1,18 @@
+broker:
+  tty: true
+  image: rawmind/rancher-kafka:0.9.0
+  volumes:
+  - /opt/kafka/data
+  environment:
+  - JVMFLAGS=-Xmx${kafka_mem}m -Xms${kafka_mem}m
+  - CONFD_INTERVAL=${kafka_interval}
+  - ZK_SERVICE=${zk_link}
+  external_links:
+  - ${zk_link}:zk
+  health_check:
+    port: 9092
+    interval: 5000
+    unhealthy_threshold: 3
+    request_line: ''
+    healthy_threshold: 2
+    response_timeout: 5000
